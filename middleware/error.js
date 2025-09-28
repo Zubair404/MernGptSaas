@@ -1,4 +1,4 @@
-import ErrorResponse from "../utilities/errorresponse";
+const ErrorResponse = require('../utilities/errorResponse');
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
@@ -31,4 +31,4 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-export default errorHandler;
+module.exports = errorHandler;

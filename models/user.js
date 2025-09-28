@@ -27,10 +27,28 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 // Generate JWT
-userSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
-};
+// Generate JWT
+userSchema.methods.getSignedJwtToken = function (res) {
+  // Use explicit env names for access/refresh secrets and expiries
+  const accessSecret = process.env.JWT_ACCESS_SECRET;
+  const refreshSecret = process.env.JWT_REFRESH_SECRET;
+  const accessExpire = process.env.JWT_ACCESS_EXPIRE || '15m';
+  const refreshExpire = process.env.JWT_REFRESH_EXPIRE || '30d';
 
-module.exports = mongoose.model('User', userSchema);    
+  const accessToken = jwt.sign({ id: this._id }, accessSecret, { expiresIn: accessExpire });
+  const refreshToken = jwt.sign({ id: this._id }, refreshSecret, { expiresIn: refreshExpire });
+
+  // If a response is passed, set the refresh token as an HTTP-only cookie
+  if (res && typeof res.cookie === 'function') {
+    res.cookie('refreshToken', refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+  }
+
+  return { accessToken, refreshToken };
+};
+const User = mongoose.model('User', userSchema);
+module.exports = User;

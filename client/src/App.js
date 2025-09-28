@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import { Routes, Route } from 'react-router-dom';
+import { useMemo } from 'react';
+
+// Material-UI
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+import { themeSettings } from './theme';
+
+// Screens
+import Navbar from './components/Navbar';
+import HomeScreen from './components/screens/HomeScreen';
+import LoginScreen from './components/screens/LoginScreen';
+import RegisterScreen from './components/screens/RegisterScreen';
+
 
 function App() {
+  // If themeSettings is a function that takes a mode:
+  const theme = useMemo(() => createTheme(themeSettings()), []);
+
+  // If themeSettings is just an object, do:
+  // const theme = useMemo(() => createTheme(themeSettings), []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+          </Routes>
+      </ThemeProvider>
     </div>
   );
 }
-
 export default App;
