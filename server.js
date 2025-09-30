@@ -24,6 +24,7 @@ const PORT = process.env.PORT || 5000;
 //connect to routes 
 const auth = require('./routes/auth');
 app.use('/api/auth', auth);
+app.use('/api/openai', require('./routes/openai'));
 
 const errorHandler = require('./middleware/error');
 app.use(errorHandler);

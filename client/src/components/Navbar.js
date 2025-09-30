@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Link, Typography, useTheme } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import axios from "axios";
 const Navbar = () => {
   const theme = useTheme();
@@ -22,8 +23,25 @@ const Navbar = () => {
       <Typography variant="h4" color="primary" fontWeight="bold" >
         Mern Saas
       </Typography>
-      {loggedIn ? <Link href="/" onClick={logoutHandler} p={2} >Logout</Link> : <><Link href="/register" p={1} >Register</Link>
-      <Link href="/login" p={1} >Login</Link></>}
+      {loggedIn ? (
+        <>
+          <Link component={RouterLink} to="/summary" p={1} sx={{ ml: 2 }}>
+            Summary
+          </Link>
+          <Link href="/" onClick={logoutHandler} p={2} sx={{ ml: 2 }}>
+            Logout
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link component={RouterLink} to="/register" p={1} sx={{ ml: 2 }}>
+            Register
+          </Link>
+          <Link component={RouterLink} to="/login" p={1} sx={{ ml: 2 }}>
+            Login
+          </Link>
+        </>
+      )}
     </Box>
   );
 };

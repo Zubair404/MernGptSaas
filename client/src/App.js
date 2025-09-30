@@ -13,6 +13,7 @@ import Navbar from './components/Navbar';
 import HomeScreen from './components/screens/HomeScreen';
 import LoginScreen from './components/screens/LoginScreen';
 import RegisterScreen from './components/screens/RegisterScreen';
+import SummaryScreen from './components/screens/SummaryScreen';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/summary" element={<SummaryScreen />} />
           </Routes>
       </ThemeProvider>
     </div>
